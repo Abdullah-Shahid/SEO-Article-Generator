@@ -1,0 +1,601 @@
+/* --- Variable Definitions --- */
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --font-headings: 'Sora', sans-serif;
+
+    --color-background: #121828;
+    /* Deep Navy/Charcoal */
+    --color-card-bg: #1B233F;
+    /* Slightly Lighter Navy */
+    --color-text-primary: #E0E7FF;
+    /* Soft Off-White/Lavender */
+    --color-text-secondary: #A0AEC0;
+    /* Cool Gray */
+    --color-accent-primary: #2CE6C5;
+    /* Vibrant Teal */
+    --color-accent-secondary: #59D2FE;
+    /* Bright Sky Blue */
+    --color-border: #343F64;
+    /* Muted border for cards/elements */
+    --color-error: #F47174;
+    --color-success: #34D399;
+    --color-link-hover: var(--color-accent-secondary);
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --border-radius: 0.5rem;
+    /* 8px */
+}
+
+/* --- Base & Pico Overrides --- */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    margin: 0;
+    padding-top: 80px;
+    /* Adjust if header height changes, for fixed header */
+}
+
+/* Override Pico's default container if needed, or use for main content area */
+.container {
+    max-width: 1100px;
+    /* Wider for modern layouts */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.app-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    margin-bottom: 0.75em;
+}
+
+h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-secondary);
+}
+
+h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* For section titles like "Generated SEO Content" */
+h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* For card titles */
+
+
+p {
+    color: var(--color-text-secondary);
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--color-accent-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+}
+
+hr.fancy-hr {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--color-accent-primary), rgba(0, 0, 0, 0));
+    margin: 3rem 0;
+}
+
+
+/* --- Header --- */
+.site-header {
+    background-color: var(--color-card-bg);
+    /* Slightly different from main bg */
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-logo {
+    font-family: var(--font-headings);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+
+.site-logo .logo-accent {
+    color: var(--color-accent-primary);
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    font-family: var(--font-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.main-nav a:hover,
+.main-nav a.active-link {
+    color: var(--color-accent-primary);
+}
+
+.main-nav a::after {
+    /* Underline effect on hover */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent-primary);
+    transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+#menuToggleBtn {
+    display: none;
+    /* Hidden on larger screens */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+#menuToggleBtn span {
+    display: block;
+    width: 30px;
+    height: 4px;
+    background-color: var(--color-text-primary);
+    margin: 2px 0;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* --- Hero Section --- */
+.hero-section {
+    text-align: center;
+    padding: 2rem 0 3rem;
+}
+
+.hero-section h1 {
+    margin-bottom: 0.5rem;
+}
+
+.hero-section h2 {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Input Section --- */
+.input-card {
+    background-color: var(--color-card-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--color-border);
+}
+
+#keywordInput {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    background-color: #2A3352;
+    /* Slightly different input bg */
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#keywordInput::placeholder {
+    color: #707AA2;
+}
+
+#keywordInput:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(44, 230, 197, 0.3);
+    /* Accent glow */
+}
+
+#generateBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    font-family: var(--font-headings);
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: var(--color-accent-primary);
+    color: var(--color-background);
+    /* Dark text on bright button */
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: var(--shadow-md);
+}
+
+#generateBtn:hover:not([disabled]) {
+    background-color: var(--color-accent-secondary);
+    transform: translateY(-2px);
+}
+
+#generateBtn:disabled {
+    background-color: #4A5568;
+    /* Muted when disabled */
+    cursor: not-allowed;
+}
+
+#generateBtn[aria-busy="true"] .spinner-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* --- Output Sections & Cards --- */
+#articleOutputContainer h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-background);
+}
+
+.content-card,
+.seo-meta-card {
+    background-color: var(--color-card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+}
+
+.seo-meta-grid {
+    /* Pico grid for title/meta */
+    gap: 1.5rem;
+    /* Spacing for grid items */
+}
+
+.seo-meta-card h4,
+.content-card h4 {
+    margin-top: 0;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.seo-meta-card p {
+    color: var(--color-text-secondary);
+    min-height: 2.5em;
+    /* Ensure some space */
+    font-size: 0.95rem;
+}
+
+.copy-btn {
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    background-color: transparent;
+    color: var(--color-accent-primary);
+    border: 1px solid var(--color-accent-primary);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+}
+
+.copy-btn:hover {
+    background-color: var(--color-accent-primary);
+    color: var(--color-background);
+}
+
+.copy-btn.copied-success {
+    background-color: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+    color: var(--color-background) !important;
+}
+
+.copy-btn.copied-error {
+    background-color: var(--color-error) !important;
+    border-color: var(--color-error) !important;
+    color: var(--color-background) !important;
+}
+
+
+.article-content {
+    padding: 1rem 0;
+    /* Remove card-in-card padding */
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    color: var(--color-text-primary);
+    margin-top: 1.8em;
+    margin-bottom: 0.8em;
+}
+
+.article-content p {
+    margin-bottom: 1.2em;
+}
+
+.article-content ul,
+.article-content ol {
+    margin-bottom: 1.2em;
+    padding-left: 1.5em;
+    /* Pico might handle this, adjust if needed */
+}
+
+.article-content li {
+    margin-bottom: 0.6em;
+}
+
+.article-content blockquote {
+    border-left: 3px solid var(--color-accent-primary);
+    padding-left: 1.5em;
+    margin: 1.5em 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+}
+
+.article-content pre,
+.article-content code {
+    background-color: #2A3352;
+    /* Darker code bg */
+    border-radius: 0.3rem;
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+    border: 1px solid var(--color-border);
+}
+
+.article-content pre {
+    padding: 1em;
+    overflow-x: auto;
+}
+
+#lsiKeywordsList {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#lsiKeywordsList li {
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+#lsiKeywordsList li:last-child {
+    border-bottom: none;
+}
+
+#lsiKeywordsList li::before {
+    content: "▹";
+    /* Teal arrow */
+    color: var(--color-accent-primary);
+    margin-right: 0.75em;
+    font-weight: bold;
+}
+
+
+/* --- Error Message --- */
+.error-message {
+    background-color: rgba(244, 113, 116, 0.1);
+    /* Faded error bg */
+    color: var(--color-error);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--color-error);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+/* --- Footer --- */
+.site-footer {
+    background-color: var(--color-card-bg);
+    padding: 2rem 0;
+    text-align: center;
+    margin-top: 3rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.site-footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.footer-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-nav a {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.footer-nav a:hover {
+    color: var(--color-accent-primary);
+}
+
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+
+    /* Adjust for slightly smaller header */
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .hero-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .header-container {
+        padding: 0 1rem;
+    }
+
+    #menuToggleBtn {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .main-nav ul {
+        display: none;
+        /* Hidden by default on mobile */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        /* Position below header */
+        left: 0;
+        width: 100%;
+        background-color: var(--color-card-bg);
+        padding: 1rem 0;
+        box-shadow: var(--shadow-lg);
+        border-top: 1px solid var(--color-border);
+    }
+
+    .main-nav ul.active {
+        display: flex;
+    }
+
+    /* Show when active */
+    .main-nav li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .main-nav a {
+        display: block;
+        padding: 0.8rem 1rem;
+        width: 100%;
+    }
+
+    .main-nav a:hover::after {
+        width: 30%;
+        left: 35%;
+        /* Center underline */
+    }
+
+    /* Hamburger Icon Animation */
+    #menuToggleBtn.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    #menuToggleBtn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    #menuToggleBtn.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .seo-meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stack cards */
+    .footer-container {
+        flex-direction: column;
+    }
+
+    .footer-nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

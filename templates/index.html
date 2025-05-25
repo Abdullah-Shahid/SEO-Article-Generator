@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI SEO Article Pro</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="/" class="site-logo">Article<span class="logo-accent">Pro</span>.ai</a>
+            <nav class="main-nav">
+                <button id="menuToggleBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mainNavLinks">
+                    <span></span> <span></span>
+                    <span></span>
+                </button>
+                <ul id="mainNavLinks">
+                    <li><a href="#input-section">Generator</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container app-container">
+        <section class="hero-section">
+            <hgroup>
+                <h1>AI-Powered SEO Article Generator</h1>
+                <h2>Craft perfectly optimized content in minutes.</h2>
+            </hgroup>
+        </section>
+
+        <section id="input-section" class="input-card">
+            <input type="text" id="keywordInput" name="keyword"
+                placeholder="e.g., 'PYTHON Projects for Beginners.'">
+            <button id="generateBtn" aria-busy="false">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1.2em"
+                    height="1.2em" style="margin-right: 0.5em;">
+                    <path
+                        d="M12.0006 18.26L4.94715 22.2082L6.52248 14.2799L0.587891 8.7918L8.61483 7.84006L12.0006 0.5L15.3864 7.84006L23.4133 8.7918L17.4787 14.2799L19.054 22.2082L12.0006 18.26ZM12.0006 15.968L16.2473 18.3451L15.2988 13.662L18.8718 10.4697L14.249 9.95359L12.0006 5.69103L9.75222 9.95359L5.12941 10.4697L8.70241 13.662L7.75392 18.3451L12.0006 15.968Z">
+                    </path>
+                </svg>
+                Generate Article
+            </button>
+        </section>
+
+        <div id="errorDisplay" class="error-message" style="display:none;" role="alert"></div>
+
+        <article id="articleOutputContainer" style="display:none;">
+            <hr class="fancy-hr">
+            <h3>Generated SEO Content</h3>
+
+            <div class="grid seo-meta-grid">
+                <div class="seo-meta-card">
+                    <h4>Optimized Title Tag</h4>
+                    <p id="titleTag" class="copyable-text"></p>
+                    <button class="outline secondary contrast copy-btn" data-copytarget="titleTag">Copy Title</button>
+                </div>
+                <div class="seo-meta-card">
+                    <h4>Meta Description</h4>
+                    <p id="metaDescription" class="copyable-text"></p>
+                    <button class="outline secondary contrast copy-btn" data-copytarget="metaDescription">Copy
+                        Meta</button>
+                </div>
+            </div>
+
+            <section id="fullArticleSection" class="content-card">
+                <h4>Full Article</h4>
+                <div id="articleBody" class="article-content copyable-text">
+                </div>
+                <button class="outline secondary contrast copy-btn" data-copytarget="articleBody">Copy Article
+                    Body</button>
+            </section>
+
+            <section id="lsiKeywordsSection" class="content-card" style="display:none;">
+                <h4>Suggested LSI Keywords</h4>
+                <ul id="lsiKeywordsList"></ul>
+            </section>
+
+            <section id="faqSection" class="content-card" style="display:none;">
+                <h4>Frequently Asked Questions</h4>
+                <div id="faqContent" class="article-content"></div>
+            </section>
+        </article>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p>&copy; <span id="currentYear"></span> ArticlePro.ai. All rights reserved.</p>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger Menu Toggle
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const mainNavLinks = document.getElementById('mainNavLinks');
+        menuToggleBtn.addEventListener('click', () => {
+            const isExpanded = menuToggleBtn.getAttribute('aria-expanded') === 'true' || false;
+            menuToggleBtn.setAttribute('aria-expanded', !isExpanded);
+            mainNavLinks.classList.toggle('active');
+            menuToggleBtn.classList.toggle('active');
+        });
+
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // --- Existing JavaScript for Article Generation and Copying ---
+        const keywordInput = document.getElementById('keywordInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const errorDisplay = document.getElementById('errorDisplay');
+        const articleOutputContainer = document.getElementById('articleOutputContainer');
+
+        const titleTagEl = document.getElementById('titleTag');
+        const metaDescriptionEl = document.getElementById('metaDescription');
+        const articleBodyEl = document.getElementById('articleBody');
+
+        const lsiKeywordsSectionEl = document.getElementById('lsiKeywordsSection');
+        const lsiKeywordsListEl = document.getElementById('lsiKeywordsList');
+        const faqSectionEl = document.getElementById('faqSection');
+        const faqContentEl = document.getElementById('faqContent');
+
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+            sanitize: false // Review this for production based on trust in Gemini's output
+        });
+
+        function parseGeminiResponse(rawText) {
+            const sections = {
+                titleTag: "N/A",
+                metaDescription: "N/A",
+                articleBody: rawText,
+                lsiKeywords: [],
+                faq: ""
+            };
+
+            let match = rawText.match(/\*\*Title Tag:\*\*\s*([\s\S]*?)\s*(\*\*Meta Description:\*\*|---|$)/i);
+            if (match && match[1]) sections.titleTag = match[1].trim();
+
+            match = rawText.match(/\*\*Meta Description:\*\*\s*([\s\S]*?)\s*(\*\*Article Body:\*\*|---|$)/i);
+            if (match && match[1]) sections.metaDescription = match[1].trim();
+
+            match = rawText.match(/\*\*Article Body:\*\*\s*([\s\S]*?)\s*(\*\*Suggested LSI Keywords:\*\*|\*\*FAQ Section:\*\*|---|$)/i);
+            if (match && match[1]) {
+                sections.articleBody = match[1].trim();
+            } else {
+                const parts = rawText.split(/---|\*\*Suggested LSI Keywords:\*\*|\*\*FAQ Section:\*\*/i);
+                // Try to find the main body if delimiters are missing or different.
+                let potentialBodyIndex = 1; // Default if title/meta are not found as separate
+                if (rawText.includes("**Title Tag:**")) potentialBodyIndex++;
+                if (rawText.includes("**Meta Description:**")) potentialBodyIndex++;
+
+                if (parts.length > potentialBodyIndex && parts[potentialBodyIndex].trim().length > 100) { // Heuristic: body is usually longer
+                    sections.articleBody = parts[potentialBodyIndex].trim();
+                } else if (parts.length > 0 && parts[0].trim().length > 100 && !rawText.startsWith("**Title Tag:**")) {
+                    // If no clear delimiters, assume the first large chunk is the body if it doesn't look like a title
+                    sections.articleBody = parts[0].trim();
+                }
+            }
+
+            match = rawText.match(/\*\*Suggested LSI Keywords:\*\*\s*([\s\S]*?)\s*(\*\*FAQ Section:\*\*|---|$)/i);
+            if (match && match[1]) {
+                sections.lsiKeywords = match[1].trim().split(/\n\s*[\*-]\s*/).map(k => k.trim()).filter(k => k);
+            }
+
+            match = rawText.match(/\*\*FAQ Section:\*\*\s*([\s\S]*?$)/i);
+            if (match && match[1]) {
+                sections.faq = match[1].trim();
+            }
+            return sections;
+        }
+
+        generateBtn.addEventListener('click', async () => {
+            const keyword = keywordInput.value.trim();
+            if (!keyword) {
+                displayError("Please enter a keyword or title.");
+                return;
+            }
+
+            generateBtn.setAttribute('aria-busy', 'true');
+            generateBtn.disabled = true;
+            // Keep icon, just change text
+            const originalBtnText = generateBtn.innerHTML;
+            generateBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="spinner-icon" width="1.2em" height="1.2em" style="margin-right: 0.5em;">
+                    <path d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 9.09934 4.34488 6.51517 6.34197 4.81895"></path>
+                </svg>
+                Generating...`;
+
+            articleOutputContainer.style.display = 'none';
+            errorDisplay.style.display = 'none';
+
+            try {
+                const response = await fetch('/generate_article', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', },
+                    body: JSON.stringify({ keyword: keyword }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                if (data.error) { displayError(data.error); return; }
+
+                const parsedSections = parseGeminiResponse(data.raw_text || "");
+
+                titleTagEl.textContent = data.title_tag || parsedSections.titleTag;
+                metaDescriptionEl.textContent = data.meta_description || parsedSections.metaDescription;
+                articleBodyEl.innerHTML = marked.parse(data.article_body_html || parsedSections.articleBody);
+
+                if (parsedSections.lsiKeywords.length > 0) {
+                    lsiKeywordsListEl.innerHTML = parsedSections.lsiKeywords.map(k => `<li>${k}</li>`).join('');
+                    lsiKeywordsSectionEl.style.display = 'block';
+                } else { lsiKeywordsSectionEl.style.display = 'none'; }
+
+                if (parsedSections.faq) {
+                    faqContentEl.innerHTML = marked.parse(parsedSections.faq);
+                    faqSectionEl.style.display = 'block';
+                } else { faqSectionEl.style.display = 'none'; }
+
+                articleOutputContainer.style.display = 'block';
+                // Scroll to results
+                articleOutputContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
+            } catch (error) {
+                console.error('Error:', error);
+                displayError(`Failed to generate article: ${error.message}`);
+            } finally {
+                generateBtn.setAttribute('aria-busy', 'false');
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = originalBtnText; // Restore original button text and icon
+            }
+        });
+
+        function displayError(message) {
+            errorDisplay.textContent = message;
+            errorDisplay.style.display = 'block';
+            articleOutputContainer.style.display = 'none';
+        }
+
+        document.addEventListener('click', async (event) => {
+            const copyButton = event.target.closest('.copy-btn'); // Use closest to handle clicks on icon/text inside button
+            if (copyButton) {
+                const targetId = copyButton.dataset.copytarget;
+                const elementToCopy = document.getElementById(targetId);
+                let textToCopy = '';
+
+                if (elementToCopy) {
+                    if (targetId === 'articleBody' || targetId === 'faqContent') {
+                        // For rich text, copy the HTML content. For plain text, use innerText
+                        // To copy as Markdown, you'd need to store the original Markdown.
+                        textToCopy = elementToCopy.innerText; // More likely user wants plain text from rendered HTML
+                    } else {
+                        textToCopy = elementToCopy.textContent || elementToCopy.innerText;
+                    }
+                }
+
+                if (textToCopy) {
+                    try {
+                        await navigator.clipboard.writeText(textToCopy);
+                        const originalButtonText = copyButton.innerHTML;
+                        copyButton.innerHTML = 'Copied!';
+                        copyButton.classList.add('copied-success');
+                        setTimeout(() => {
+                            copyButton.innerHTML = originalButtonText;
+                            copyButton.classList.remove('copied-success');
+                        }, 2000);
+                    } catch (err) {
+                        console.error('Failed to copy: ', err);
+                        const originalButtonText = copyButton.innerHTML;
+                        copyButton.innerHTML = 'Error!';
+                        copyButton.classList.add('copied-error');
+                        setTimeout(() => {
+                            copyButton.innerHTML = originalButtonText;
+                            copyButton.classList.remove('copied-error');
+                        }, 2000);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
