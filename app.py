@@ -7,8 +7,8 @@ load_dotenv() # Optional: Load environment variables from .env file
 
 app = Flask(__name__)
 
+genai.configure(api_key="AIzaSyCwrZHQgXwSL_O2_xFXJ0eU_ZpEM1AAcBo")
 
-genai.configure(api_key=os.environ["AIzaSyCwrZHQgXwSL_O2_xFXJ0eU_ZpEM1AAcBo"])
 
 # Initialize the Generative Model
 # Choose a model that suits your needs, e.g., 'gemini-1.5-flash' or 'gemini-pro'
