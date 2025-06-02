@@ -7,7 +7,7 @@ load_dotenv() # Optional: Load environment variables from .env file
 
 app = Flask(__name__)
 
-genai.configure(api_key="AIzaSyCwrZHQgXwSL_O2_xFXJ0eU_ZpEM1AAcBo")
+genai.configure(api_key=os.environ["GENAI_API_KEY"])
 
 
 # Initialize the Generative Model
